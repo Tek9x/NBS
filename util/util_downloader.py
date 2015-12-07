@@ -2,7 +2,6 @@ import requests
 import re
 import js2py
 
-
 class Downloader(object):
     def __init__(self, url):
         self.url = url

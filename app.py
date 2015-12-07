@@ -4,10 +4,13 @@ from PyQt4.QtWebKit import QWebView, QWebSettings
 from PyQt4 import QtGui
 from PyQt4 import QtCore
 from PyQt4.QtCore import SIGNAL
-import logging, sys, json
+import logging, sys, json, os
 from util.util_downloader import Downloader
 from gui.ui_watch import Ui_watchWindow
 from collections import OrderedDict
+
+basePath = os.path.dirname( os.path.abspath( sys.argv[0] ) )
+sys.path.insert( 0, basePath )
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s.%(msecs)03d: %(message)s', datefmt='%H:%M:%S')
 logging.disable(logging.DEBUG)
