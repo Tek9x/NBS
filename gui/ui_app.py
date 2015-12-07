@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\TekTonic\Desktop\ui_app.ui'
+# Form implementation generated from reading ui file 'C:\Users\TekTonic\Desktop\Programming\Python\programs\NBS\designer\ui_app.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
@@ -26,6 +26,8 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(473, 309)
+        MainWindow.setMinimumSize(QtCore.QSize(473, 309))
+        MainWindow.setMaximumSize(QtCore.QSize(473, 309))
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Terminal"))
         MainWindow.setFont(font)
@@ -37,10 +39,6 @@ class Ui_MainWindow(object):
         self.downloadButton = QtGui.QPushButton(self.centralwidget)
         self.downloadButton.setGeometry(QtCore.QRect(46, 216, 75, 23))
         self.downloadButton.setObjectName(_fromUtf8("downloadButton"))
-        self.ThumbView = QtWebKit.QWebView(self.centralwidget)
-        self.ThumbView.setGeometry(QtCore.QRect(137, 30, 239, 158))
-        self.ThumbView.setUrl(QtCore.QUrl(_fromUtf8("about:blank")))
-        self.ThumbView.setObjectName(_fromUtf8("ThumbView"))
         self.label = QtGui.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(215, 198, 78, 16))
         self.label.setObjectName(_fromUtf8("label"))
@@ -48,11 +46,17 @@ class Ui_MainWindow(object):
         self.episodeLIST.setGeometry(QtCore.QRect(41, 40, 83, 149))
         self.episodeLIST.setObjectName(_fromUtf8("episodeLIST"))
         self.titleLabel = QtGui.QLabel(self.centralwidget)
-        self.titleLabel.setGeometry(QtCore.QRect(178, 8, 159, 16))
+        self.titleLabel.setGeometry(QtCore.QRect(178, 8, 260, 16))
         self.titleLabel.setObjectName(_fromUtf8("titleLabel"))
         self.descLabel = QtGui.QLabel(self.centralwidget)
         self.descLabel.setGeometry(QtCore.QRect(140, 216, 242, 57))
+        self.descLabel.setWordWrap(True)
         self.descLabel.setObjectName(_fromUtf8("descLabel"))
+        self.imgLabel = QtGui.QLabel(self.centralwidget)
+        self.imgLabel.setGeometry(QtCore.QRect(138, 32, 214, 149))
+        self.imgLabel.setText(_fromUtf8(""))
+        self.imgLabel.setScaledContents(True)
+        self.imgLabel.setObjectName(_fromUtf8("imgLabel"))
         MainWindow.setCentralWidget(self.centralwidget)
         self.menuBar = QtGui.QMenuBar(MainWindow)
         self.menuBar.setGeometry(QtCore.QRect(0, 0, 473, 21))
@@ -81,4 +85,3 @@ class Ui_MainWindow(object):
         self.menuLoad.setTitle(_translate("MainWindow", "load", None))
         self.actionSeason_1.setText(_translate("MainWindow", "Season 1", None))
 
-from PyQt4 import QtWebKit

@@ -1,13 +1,17 @@
-from PyQt4.QtCore import QThread
-from gui.ui_app import Ui_MainWindow
-from PyQt4.QtWebKit import QWebView, QWebSettings
-from PyQt4 import QtGui
-from PyQt4 import QtCore
-from PyQt4.QtCore import SIGNAL
-import logging, sys, json, os
-from util.util_downloader import Downloader
-from gui.ui_watch import Ui_watchWindow
+import json
+
+import logging
+import os
+import sys
 from collections import OrderedDict
+import requests
+from PyQt4 import QtGui
+from PyQt4.QtCore import SIGNAL
+from PyQt4.QtWebKit import QWebSettings
+
+from gui.ui_app import Ui_MainWindow
+from gui.ui_watch import Ui_watchWindow
+from util.util_downloader import Downloader
 
 basePath = os.path.dirname( os.path.abspath( sys.argv[0] ) )
 sys.path.insert( 0, basePath )
@@ -24,20 +28,32 @@ class NoBs(QtGui.QMainWindow, Ui_MainWindow):
         super(NoBs, self).__init__(parent)
         self.setupUi(self)
         self.seasons = db['Simpsons']
-        # self.SeasonBox.activated[str].connect(self.onActivated)
+        self.episodeLIST.itemActivated.connect(self.listhandler)
         self.connect(self.actionSeason_1, SIGNAL('triggered()'), self.seasonone)
         self.watchButton.clicked.connect(self.watch_handler)
         self.window2 = None
         self.watchButton.setEnabled(False)
         self.downloadButton.setEnabled(False)
-        self.SeasonBox.setEnabled(False)
 
     def seasonone(self):
-        self.SeasonBox.clear()
-        self.SeasonBox.addItems(self.seasons['Season One'].keys())
+        self.episodeLIST.clear()
+        self.episodeLIST.addItems(self.seasons['Season One'].keys())
         # self.downloadButton.setEnabled(True)
         self.watchButton.setEnabled(True)
-        self.SeasonBox.setEnabled(True)
+
+    def listhandler(self, item):
+        url = self.seasons['Season One'][unicode(item.text())]['thumb']
+        title = self.seasons['Season One'][unicode(item.text())]['Title']
+        desc = self.seasons['Season One'][unicode(item.text())]['desc']
+        self.titleLabel.setText(title)
+        self.descLabel.setText(desc)
+        data = requests.get(url)
+        content = data.content
+
+        image = QtGui.QImage()
+        image.loadFromData(content)
+        self.imgLabel.setPixmap(QtGui.QPixmap(image))
+
 
     def watch_handler(self):
         lin = self.get_url()
@@ -62,7 +78,7 @@ src="%s">
 
     def get_url(self):
         if self.window2 is None:
-            text = self.SeasonBox.currentText()
+            text = self.episodeLIST.currentItem().text()
             if unicode(text) in self.seasons['Season One'].keys():
                 abd = self.seasons['Season One'][unicode(text)]['url']
                 adg = self.seasons['Season One'][unicode(text)]['Title']
