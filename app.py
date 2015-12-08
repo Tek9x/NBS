@@ -1,20 +1,18 @@
 import json
-
 import logging
 import os
 import sys
 from collections import OrderedDict
 import requests
 from PyQt4 import QtGui
-from PyQt4.QtCore import SIGNAL
+from PyQt4.QtCore import pyqtSignal, SIGNAL
 from PyQt4.QtWebKit import QWebSettings
-
 from gui.ui_app import Ui_MainWindow
 from gui.ui_watch import Ui_watchWindow
 from util.util_downloader import Downloader
 
-basePath = os.path.dirname( os.path.abspath( sys.argv[0] ) )
-sys.path.insert( 0, basePath )
+basePath = os.path.dirname(os.path.abspath(sys.argv[0]))
+sys.path.insert(0, basePath)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s.%(msecs)03d: %(message)s', datefmt='%H:%M:%S')
 logging.disable(logging.DEBUG)
@@ -39,10 +37,11 @@ class NoBs(QtGui.QMainWindow, Ui_MainWindow):
         self.episodeLIST.clear()
         self.episodeLIST.addItems(self.seasons['Season One'].keys())
         # self.downloadButton.setEnabled(True)
-        self.watchButton.setEnabled(True)
 
     def listhandler(self, item):
         url = self.seasons['Season One'][unicode(item.text())]['thumb']
+
+
         title = self.seasons['Season One'][unicode(item.text())]['Title']
         desc = self.seasons['Season One'][unicode(item.text())]['desc']
         self.titleLabel.setText(title)
@@ -53,12 +52,17 @@ class NoBs(QtGui.QMainWindow, Ui_MainWindow):
         image = QtGui.QImage()
         image.loadFromData(content)
         self.imgLabel.setPixmap(QtGui.QPixmap(image))
-
+        self.watchButton.setEnabled(True)
 
     def watch_handler(self):
         lin = self.get_url()
-        print lin
-        self.showWatch(lin[0], lin[1])
+        try:
+            self.showWatch(lin[0], lin[1])
+        except TypeError:
+            logging.info('[debug]: episode already playing, please close that episode before starting another.')
+
+    def onFinished(self):
+        self.window2 = None
 
     def showWatch(self, url, Title):
         if self.window2 is None:
@@ -75,6 +79,7 @@ src="%s">
 </body>
 </html>''' % url)
         self.window2.show()
+        self.window2.taskFinished.connect(self.onFinished)
 
     def get_url(self):
         if self.window2 is None:
@@ -88,14 +93,21 @@ src="%s">
 
 
 class Watch(QtGui.QMainWindow, Ui_watchWindow):
+
+    taskFinished = pyqtSignal()
+
     def __init__(self, parent=None):
         super(Watch, self).__init__(parent)
         self.setupUi(self)
         self.connect(self, SIGNAL('triggered()'), self.closeEvent)
 
+
     def closeEvent(self, event):
+        self.taskFinished.emit()
         print "Closing"
-        self.webView.close()
+        self.deleteLater()
+
+
 
 
 def main():
