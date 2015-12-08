@@ -1,12 +1,14 @@
 import json
 import logging
 import os
-import sys
 from collections import OrderedDict
+
 import requests
+import sys
 from PyQt4 import QtGui
 from PyQt4.QtCore import pyqtSignal, SIGNAL
 from PyQt4.QtWebKit import QWebSettings
+
 from gui.ui_app import Ui_MainWindow
 from gui.ui_watch import Ui_watchWindow
 from util.util_downloader import Downloader
@@ -56,6 +58,7 @@ class NoBs(QtGui.QMainWindow, Ui_MainWindow):
 
     def watch_handler(self):
         lin = self.get_url()
+        print lin
         try:
             self.showWatch(lin[0], lin[1])
         except TypeError:
