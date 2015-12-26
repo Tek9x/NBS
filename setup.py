@@ -1,6 +1,10 @@
 from distutils.core import setup
-import py2exe, sys, os
-import pytz, shutil
+
+import os
+import pytz
+import shutil
+import sys
+
 sys.argv.append('py2exe')
 
 setup(

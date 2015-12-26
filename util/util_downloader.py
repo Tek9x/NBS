@@ -1,6 +1,8 @@
-import requests
 import re
+
 import js2py
+import requests
+
 
 class Downloader(object):
     def __init__(self, url):
@@ -8,7 +10,8 @@ class Downloader(object):
 
     def WebsiteURL(self):
         videomegaUrlRegex = '(https?:\/\/(www\.)?videomega\.tv\/(view|iframe|cdn)\.php\?ref=([A-Za-z0-9]+))'
-        u = requests.get(self.url)
+        s = requests.Session()
+        u = s.get(self.url)
         r = re.findall(videomegaUrlRegex, u.content)[0]
         b = r[0]
         return b
@@ -17,7 +20,8 @@ class Downloader(object):
         header = {"Referer": "http://google.com/"}
         findeval = '(eval[^<]+)'
         yx = self.WebsiteURL()
-        ldo = requests.get(yx, headers=header)
+        s = requests.Session()
+        ldo = s.get(yx, headers=header)
         eV = re.findall(findeval, ldo.content)[0]
         return eV
 
@@ -29,9 +33,5 @@ class Downloader(object):
         return downloadURL
 
 
-
-#test = Downloader('http://www.wtso.cc/video/vip/992/eng/season_1/season_1_episode_6_moaning_lisa')
-#test.WebsiteEval()
-
-
-
+test = Downloader('http://www.wtso.cc/video/vip/1170/eng/season_9/season_9_episode_3_lisa_39_s_sax')
+print test.WebsiteEval()
