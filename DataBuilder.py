@@ -23,4 +23,4 @@ for i in seasons:
     doh = str(stop).lstrip('-')
     title.append(doh)
 
-print tedst
+print title
