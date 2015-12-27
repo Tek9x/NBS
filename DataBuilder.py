@@ -25,6 +25,14 @@ for i in seasons:
 
 hello = [x.strip(' ') for x in title]
 
+for j in seasons:
+    p = requests.get(j)
+    tt = p.text
+    s = BeautifulSoup(tt, 'lxml')
+    dlin = s.find('iframe')['src']
+    store = dlin
+    print store
+
 episodes = []
 for i in hello:
     episodes.append({"title": i})
