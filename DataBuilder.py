@@ -23,4 +23,8 @@ for i in seasons:
     doh = str(stop).lstrip('-')
     title.append(doh)
 
-print title
+episodes = []
+for i in title:
+    episodes.append({"title": i})
+
+print episodes
