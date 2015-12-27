@@ -1,3 +1,5 @@
+import pprint
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -10,7 +12,7 @@ episodeurls = soup.select("div.entryBlock [href]")
 
 if episodeurls:
     seasons = [link['href'] for link in episodeurls]
-    print seasons
+
 title = []
 for i in seasons:
 
@@ -25,16 +27,18 @@ for i in seasons:
 
 hello = [x.strip(' ') for x in title]
 
+url = []
 for j in seasons:
     p = requests.get(j)
     tt = p.text
     s = BeautifulSoup(tt, 'lxml')
     dlin = s.find('iframe')['src']
     store = dlin
-    print store
+    url.append(store)
 
-episodes = []
-for i in hello:
-    episodes.append({"title": i})
+episode = []
+for v in url:
+    for i in title:
+        episode.append({"title": i, 'url': v})
 
-print episodes
+pprint.pprint(episode)
